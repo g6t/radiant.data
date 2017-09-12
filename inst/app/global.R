@@ -206,13 +206,13 @@ options(radiant.help.cc = "&copy; Vincent Nijs (2017) <a rel='license' href='htt
 
 ## try http://127.0.0.1:3174/?url=multivariate/conjoint/plot/&SSUID=local
 options(radiant.url.list =
-  list("Data" = list("tabs_data" = list("Manage"    = "data/",
-                                        "View"      = "data/view/",
+  list("Data" = list("tabs_data" = list(#"Manage"    = "data/",
+                                        #"View"      = "data/view/",
                                         "Visualize" = "data/visualize/",
-                                        "Pivot"     = "data/pivot/",
-                                        "Explore"   = "data/explore/",
-                                        "Transform" = "data/transform/",
-                                        "Combine"   = "data/combine/"))
+                                        "Pivot"     = "data/pivot/"))
+                                        #"Explore"   = "data/explore/",
+                                        #"Transform" = "data/transform/",
+                                        #"Combine"   = "data/combine/"))
   ))
 
 make_url_patterns <- function(url_list = getOption("radiant.url.list"),
