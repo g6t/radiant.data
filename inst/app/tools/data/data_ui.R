@@ -15,15 +15,15 @@ output$ui_data <- renderUI({
     sidebarLayout(
       sidebarPanel(
         wellPanel(
-          uiOutput("ui_datasets"),
-          conditionalPanel("input.tabs_data != 'Manage'",
-            checkboxInput("show_filter", "Filter data", value = state_init("show_filter",FALSE)),
-            conditionalPanel("input.show_filter == true",
-              returnTextAreaInput("data_filter", label = "",
-                value = state_init("data_filter"),
-                placeholder = "Provide a filter (e.g., price >  5000) and press return"
-              ),
-              uiOutput("ui_filter_error")))
+          uiOutput("ui_datasets")#,
+          # conditionalPanel("input.tabs_data != 'Manage'",
+          #   checkboxInput("show_filter", "Filter data", value = state_init("show_filter",FALSE)),
+          #   conditionalPanel("input.show_filter == true",
+          #     returnTextAreaInput("data_filter", label = "",
+          #       value = state_init("data_filter"),
+          #       placeholder = "Provide a filter (e.g., price >  5000) and press return"
+          #     ),
+          #     uiOutput("ui_filter_error")))
         ),
         conditionalPanel("input.tabs_data == 'Manage'", uiOutput("ui_Manage")),
         # conditionalPanel("input.tabs_data == 'View'", uiOutput("ui_View")),

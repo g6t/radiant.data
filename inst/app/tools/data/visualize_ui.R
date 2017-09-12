@@ -10,7 +10,7 @@ viz_args <- as.list(formals(visualize))
 ## list of function inputs selected by user
 viz_inputs <- reactive({
   ## loop needed because reactive values don't allow single bracket indexing
-  viz_args$data_filter <- if (input$show_filter) input$data_filter else ""
+  viz_args$data_filter <- ""#if (input$show_filter) input$data_filter else ""
   viz_args$dataset <- input$dataset
   viz_args$shiny <- input$shiny
   for (i in r_drop(names(viz_args)))
@@ -236,8 +236,8 @@ output$ui_Visualize <- renderUI({
           min = 0.1, max = 3, step = .1
         )
       ),
-      sliderInput("viz_alpha", label = "Opacity:", 
-        value = state_init("viz_alpha",.5), 
+      sliderInput("viz_alpha", label = "Opacity:",
+        value = state_init("viz_alpha",.5),
         min = 0, max = 1, step = .01
       ),
       tags$table(
@@ -329,24 +329,24 @@ output$visualize <- renderPlot({
 observeEvent(input$visualize_report, {
   ## resetting hidden elements to default values
   vi <- viz_inputs()
-  if (input$viz_type != "dist") 
+  if (input$viz_type != "dist")
     vi$bins <- viz_args$bins
-  if (!input$viz_type %in% c("density","scatter") || !"loess" %in% input$viz_check) 
+  if (!input$viz_type %in% c("density","scatter") || !"loess" %in% input$viz_check)
     vi$smooth <- viz_args$smooth
-  if (!input$viz_type %in% c("scatter", "box") && "jitter" %in% input$viz_check) 
+  if (!input$viz_type %in% c("scatter", "box") && "jitter" %in% input$viz_check)
     vi$check <- setdiff(vi$check, "jitter")
-  if (!input$viz_type %in% "scatter") 
+  if (!input$viz_type %in% "scatter")
     vi$size <- "none"
 
   inp_main <- clean_args(vi, viz_args)
   inp_main[["custom"]] <- FALSE
   update_report(
-    inp_main = inp_main, 
-    fun_name = "visualize", 
-    outputs = character(0), 
-    pre_cmd = "", 
-    figs = TRUE, 
-    fig.width = viz_plot_width(), 
+    inp_main = inp_main,
+    fun_name = "visualize",
+    outputs = character(0),
+    pre_cmd = "",
+    figs = TRUE,
+    fig.width = viz_plot_width(),
     fig.height = viz_plot_height()
   )
 })
