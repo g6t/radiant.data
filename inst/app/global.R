@@ -42,7 +42,7 @@ init_data <- function() {
   ## are changed."
   r_data <- reactiveValues()
 
-  df_name <- getOption("radiant.init.data", default = "diamonds")
+  df_name <- getOption("radiant.init.data", default = "spt_d_tidy")
   if (file.exists(df_name)) {
     df <- load(df_name) %>% get
     df_name <- basename(df_name) %>% {gsub(paste0(".",tools::file_ext(.)),"",., fixed = TRUE)}

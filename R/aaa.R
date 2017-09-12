@@ -145,3 +145,12 @@ NULL
 #' @usage data(avengers)
 #' @format A data frame with 7 rows and 4 variables
 NULL
+
+#' spt_d_tidy
+#' @details details
+#' @docType data
+#' @keywords datasets
+#' @name spt_d_tidy
+#' @usage data(spt_d_tidy)
+#' @format A data frame with X rows and Y variables
+NULL
