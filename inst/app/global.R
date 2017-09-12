@@ -107,37 +107,37 @@ options(radiant.nav_ui =
 
 options(radiant.shared_ui =
   tagList(
-    navbarMenu("R",
-               tabPanel("Report", uiOutput("report"), icon = icon("edit")),
-               tabPanel("Code", uiOutput("rcode"), icon = icon("code"))
-    ),
+    # navbarMenu("R",
+    #            tabPanel("Report", uiOutput("report"), icon = icon("edit")),
+    #            tabPanel("Code", uiOutput("rcode"), icon = icon("code"))
+    # ),
 
-    navbarMenu("", icon = icon("save"),
-               tabPanel(downloadLink("saveStateNav", " Save state", class = "fa fa-download")),
-               ## waiting for this feature in Shiny
-               # tabPanel(tags$a(id = "loadStateNav", href = "", class = "shiny-input-container",
-               #                 type='file', accept='.rmd,.Rmd,.md', list(icon("refresh"), "Refresh"))),
-               # tabPanel(uploadLink("loadState", "Load state"), icon = icon("folder-open")),
-               tabPanel(actionLink("shareState", "Share state", icon = icon("share"))),
-               tabPanel("View state", uiOutput("view_state"), icon = icon("user"))
-    ),
+    # navbarMenu("", icon = icon("save"),
+    #            tabPanel(downloadLink("saveStateNav", " Save state", class = "fa fa-download")),
+    #            ## waiting for this feature in Shiny
+    #            # tabPanel(tags$a(id = "loadStateNav", href = "", class = "shiny-input-container",
+    #            #                 type='file', accept='.rmd,.Rmd,.md', list(icon("refresh"), "Refresh"))),
+    #            # tabPanel(uploadLink("loadState", "Load state"), icon = icon("folder-open")),
+    #            tabPanel(actionLink("shareState", "Share state", icon = icon("share"))),
+    #            tabPanel("View state", uiOutput("view_state"), icon = icon("user"))
+    # ),
 
-    ## stop app *and* close browser window
-    navbarMenu("", icon = icon("power-off"),
-               tabPanel(actionLink("stop_radiant", "Stop", icon = icon("stop"),
-                                   onclick = "setTimeout(function(){window.close();}, 100); ")),
-               if (rstudioapi::isAvailable()) {
-                 tabPanel(actionLink("stop_radiant_rmd", "Stop & Report", icon = icon("stop"),
-                                     onclick = "setTimeout(function(){window.close();}, 100); "))
-               } else {
-                 tabPanel("")
-               },
-               tabPanel(tags$a(id = "refresh_radiant", href = "#", class = "action-button",
-                               list(icon("refresh"), "Refresh"), onclick = "window.location.reload();")),
-               ## had to remove class = "action-button" to make this work
-               tabPanel(tags$a(id = "new_session", href = "./", target = "_blank",
-                               list(icon("plus"), "New session")))
-    )
+    # ## stop app *and* close browser window
+    # navbarMenu("", icon = icon("power-off"),
+    #            tabPanel(actionLink("stop_radiant", "Stop", icon = icon("stop"),
+    #                                onclick = "setTimeout(function(){window.close();}, 100); ")),
+    #            if (rstudioapi::isAvailable()) {
+    #              tabPanel(actionLink("stop_radiant_rmd", "Stop & Report", icon = icon("stop"),
+    #                                  onclick = "setTimeout(function(){window.close();}, 100); "))
+    #            } else {
+    #              tabPanel("")
+    #            },
+    #            tabPanel(tags$a(id = "refresh_radiant", href = "#", class = "action-button",
+    #                            list(icon("refresh"), "Refresh"), onclick = "window.location.reload();")),
+    #            ## had to remove class = "action-button" to make this work
+    #            tabPanel(tags$a(id = "new_session", href = "./", target = "_blank",
+    #                            list(icon("plus"), "New session")))
+    # )
   )
 )
 
@@ -170,15 +170,15 @@ options(radiant.mathjax.path = "https://cdn.mathjax.org/mathjax/latest")
 ## function to generate help, must be in global because used in ui.R
 help_menu <- function(hlp) {
   tagList(
-    navbarMenu("", icon = icon("question-circle"),
-      tabPanel("Help", uiOutput(hlp), icon = icon("question")),
-      tabPanel("Videos", uiOutput("help_videos"), icon = icon("film")),
-      tabPanel("About", uiOutput("help_about"), icon = icon("info")),
-      tabPanel(tags$a("", href = "https://radiant-rstats.github.io/docs/", target = "_blank",
-               list(icon("globe"), "Radiant docs"))),
-      tabPanel(tags$a("", href = "https://github.com/radiant-rstats/radiant/issues", target = "_blank",
-               list(icon("github"), "Report issue")))
-    ),
+    # navbarMenu("", icon = icon("question-circle"),
+    #   tabPanel("Help", uiOutput(hlp), icon = icon("question")),
+    #   tabPanel("Videos", uiOutput("help_videos"), icon = icon("film")),
+    #   tabPanel("About", uiOutput("help_about"), icon = icon("info")),
+    #   tabPanel(tags$a("", href = "https://radiant-rstats.github.io/docs/", target = "_blank",
+    #            list(icon("globe"), "Radiant docs"))),
+    #   tabPanel(tags$a("", href = "https://github.com/radiant-rstats/radiant/issues", target = "_blank",
+    #            list(icon("github"), "Report issue")))
+    # ),
     tags$head(
       tags$script(src = "js/session.js"),
       tags$script(src = "js/returnTextAreaBinding.js"),
