@@ -3,15 +3,6 @@
 ## when available
 ################################################################################
 
-## options to set for debugging
-# options(shiny.trace = TRUE)
-# options(shiny.reactlog = TRUE)
-# options(shiny.error = recover)
-# options(warn = 2)
-# options(warn = 0)
-## turn off warnings globally
-# options(warn=-1)
-
 ## set autoreload on if found TRUE in .Rprofile
 # options("autoreload")[[1]] %>%
 #   {options(shiny.autoreload = ifelse (!is.null(.) && ., TRUE, FALSE))}
