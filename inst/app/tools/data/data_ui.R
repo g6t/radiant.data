@@ -19,32 +19,33 @@ output$ui_data <- renderUI({
           conditionalPanel("input.tabs_data != 'Manage'",
             checkboxInput("show_filter", "Filter data", value = state_init("show_filter",FALSE)),
             conditionalPanel("input.show_filter == true",
-              returnTextAreaInput("data_filter", label = "", 
+              returnTextAreaInput("data_filter", label = "",
                 value = state_init("data_filter"),
                 placeholder = "Provide a filter (e.g., price >  5000) and press return"
               ),
               uiOutput("ui_filter_error")))
         ),
         conditionalPanel("input.tabs_data == 'Manage'", uiOutput("ui_Manage")),
-        conditionalPanel("input.tabs_data == 'View'", uiOutput("ui_View")),
-        conditionalPanel("input.tabs_data == 'Visualize'", uiOutput("ui_Visualize")),
+        # conditionalPanel("input.tabs_data == 'View'", uiOutput("ui_View")),
         conditionalPanel("input.tabs_data == 'Pivot'",uiOutput("ui_Pivotr")),
-        conditionalPanel("input.tabs_data == 'Explore'", uiOutput("ui_Explore")),
-        conditionalPanel("input.tabs_data == 'Transform'", uiOutput("ui_Transform")),
-        conditionalPanel("input.tabs_data == 'Combine'", uiOutput("ui_Combine"))),
+        conditionalPanel("input.tabs_data == 'Visualize'", uiOutput("ui_Visualize"))
+        # conditionalPanel("input.tabs_data == 'Explore'", uiOutput("ui_Explore")),
+        # conditionalPanel("input.tabs_data == 'Transform'", uiOutput("ui_Transform")),
+        # conditionalPanel("input.tabs_data == 'Combine'", uiOutput("ui_Combine"))
+        ),
       mainPanel(
         tabsetPanel(id = "tabs_data",
-          tabPanel("Manage", 
+          tabPanel("Manage",
             conditionalPanel("input.dman_preview == 'preview'", h2("Data preview"), htmlOutput("htmlDataExample")),
             conditionalPanel("input.dman_preview == 'str'", h2("Data structure"), verbatimTextOutput("strData")),
             conditionalPanel("input.dman_preview == 'summary'", h2("Data summary"), verbatimTextOutput("summaryData")),
             conditionalPanel("input.man_add_descr == false", uiOutput("dataDescriptionHTML")),
             conditionalPanel("input.man_add_descr == true", uiOutput("dataDescriptionMD"))
           ),
-          tabPanel("View",
-            downloadLink("dl_view_tab", "", class = "fa fa-download alignright"),
-            DT::dataTableOutput("dataviewer")
-          ),
+          # tabPanel("View",
+          #   downloadLink("dl_view_tab", "", class = "fa fa-download alignright"),
+          #   DT::dataTableOutput("dataviewer")
+          # ),
           tabPanel("Visualize",
             conditionalPanel("input.viz_pause == false",
               plot_downloader(".visualize", width = viz_plot_width, height = viz_plot_height, pre = "")
@@ -65,23 +66,23 @@ output$ui_data <- renderUI({
               ),
               plotOutput("plot_pivot", width = "100%", height = "100%")
             )
-          ),
-          tabPanel("Explore",
-            conditionalPanel("input.expl_pause == false",
-              downloadLink("dl_explore_tab", "", class = "fa fa-download alignright")
-            ),
-            DT::dataTableOutput("explore")),
-          tabPanel("Transform",
-            htmlOutput("transform_data"),
-            verbatimTextOutput("transform_summary"),
-            uiOutput("ui_tr_log")
-          ),
-          tabPanel("Combine", 
-            htmlOutput("cmb_data1"), 
-            htmlOutput("cmb_data2"), 
-            htmlOutput("cmb_possible"), 
-            htmlOutput("cmb_data")
-          )
+          )#,
+          # tabPanel("Explore",
+          #   conditionalPanel("input.expl_pause == false",
+          #     downloadLink("dl_explore_tab", "", class = "fa fa-download alignright")
+          #   ),
+          #   DT::dataTableOutput("explore")),
+          # tabPanel("Transform",
+          #   htmlOutput("transform_data"),
+          #   verbatimTextOutput("transform_summary"),
+          #   uiOutput("ui_tr_log")
+          # ),
+          # tabPanel("Combine",
+          #   htmlOutput("cmb_data1"),
+          #   htmlOutput("cmb_data2"),
+          #   htmlOutput("cmb_possible"),
+          #   htmlOutput("cmb_data")
+          # )
         )
       )
     )
