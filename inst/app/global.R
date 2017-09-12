@@ -105,41 +105,6 @@ options(radiant.nav_ui =
   list(windowTitle = "Radiant", id = "nav_radiant", inverse = TRUE,
        collapsible = TRUE, tabPanel("Data", withMathJax(), uiOutput("ui_data"))))
 
-options(radiant.shared_ui =
-  tagList(
-    # navbarMenu("R",
-    #            tabPanel("Report", uiOutput("report"), icon = icon("edit")),
-    #            tabPanel("Code", uiOutput("rcode"), icon = icon("code"))
-    # ),
-
-    # navbarMenu("", icon = icon("save"),
-    #            tabPanel(downloadLink("saveStateNav", " Save state", class = "fa fa-download")),
-    #            ## waiting for this feature in Shiny
-    #            # tabPanel(tags$a(id = "loadStateNav", href = "", class = "shiny-input-container",
-    #            #                 type='file', accept='.rmd,.Rmd,.md', list(icon("refresh"), "Refresh"))),
-    #            # tabPanel(uploadLink("loadState", "Load state"), icon = icon("folder-open")),
-    #            tabPanel(actionLink("shareState", "Share state", icon = icon("share"))),
-    #            tabPanel("View state", uiOutput("view_state"), icon = icon("user"))
-    # ),
-
-    # ## stop app *and* close browser window
-    # navbarMenu("", icon = icon("power-off"),
-    #            tabPanel(actionLink("stop_radiant", "Stop", icon = icon("stop"),
-    #                                onclick = "setTimeout(function(){window.close();}, 100); ")),
-    #            if (rstudioapi::isAvailable()) {
-    #              tabPanel(actionLink("stop_radiant_rmd", "Stop & Report", icon = icon("stop"),
-    #                                  onclick = "setTimeout(function(){window.close();}, 100); "))
-    #            } else {
-    #              tabPanel("")
-    #            },
-    #            tabPanel(tags$a(id = "refresh_radiant", href = "#", class = "action-button",
-    #                            list(icon("refresh"), "Refresh"), onclick = "window.location.reload();")),
-    #            ## had to remove class = "action-button" to make this work
-    #            tabPanel(tags$a(id = "new_session", href = "./", target = "_blank",
-    #                            list(icon("plus"), "New session")))
-    # )
-  )
-)
 
 ## environment to hold session information
 r_sessions <- new.env(parent = emptyenv())
@@ -153,47 +118,6 @@ addResourcePath("imgs", file.path(getOption("radiant.path.data"), "app/www/imgs/
 addResourcePath("js", file.path(getOption("radiant.path.data"), "app/www/js/"))
 
 options(radiant.mathjax.path = "https://cdn.mathjax.org/mathjax/latest")
-
-# using mathjax bundeled with Rstudio if available
-# if (Sys.getenv("RMARKDOWN_MATHJAX_PATH") == "") {
-#   options(radiant.mathjax.path = "https://cdn.mathjax.org/mathjax/latest")
-# } else {
-#   options(radiant.mathjax.path = Sys.getenv("RMARKDOWN_MATHJAX_PATH"))
-# }
-
-# withMathJaxR <- function (...)  {
-#   path <- paste0(getOption("radiant.mathjax.path"),"/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-#   tagList(tags$head(singleton(tags$script(src = path, type = "text/javascript"))),
-#           ..., tags$script(HTML("if (window.MathJax) MathJax.Hub.Queue([\"Typeset\", MathJax.Hub]);")))
-# }
-
-## function to generate help, must be in global because used in ui.R
-help_menu <- function(hlp) {
-  tagList(
-    # navbarMenu("", icon = icon("question-circle"),
-    #   tabPanel("Help", uiOutput(hlp), icon = icon("question")),
-    #   tabPanel("Videos", uiOutput("help_videos"), icon = icon("film")),
-    #   tabPanel("About", uiOutput("help_about"), icon = icon("info")),
-    #   tabPanel(tags$a("", href = "https://radiant-rstats.github.io/docs/", target = "_blank",
-    #            list(icon("globe"), "Radiant docs"))),
-    #   tabPanel(tags$a("", href = "https://github.com/radiant-rstats/radiant/issues", target = "_blank",
-    #            list(icon("github"), "Report issue")))
-    # ),
-    tags$head(
-      tags$script(src = "js/session.js"),
-      tags$script(src = "js/returnTextAreaBinding.js"),
-      tags$script(src = "js/returnTextInputBinding.js"),
-      tags$script(src = "js/video_reset.js"),
-      tags$script(src = "js/message-handler.js"),
-      tags$script(src = "js/run_return.js"),
-      # tags$script(src = "js/draggable_modal.js"),
-      tags$link(rel = "shortcut icon", href = "imgs/icon.png")
-    )
-  )
-}
-
-## copy-right text
-options(radiant.help.cc = "&copy; Vincent Nijs (2017) <a rel='license' href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src ='imgs/80x15.png' /></a></br>")
 
 #####################################
 ## url processing to share results
