@@ -25,7 +25,7 @@ output$ui_data <- renderUI({
           #     ),
           #     uiOutput("ui_filter_error")))
         ),
-        conditionalPanel("input.tabs_data == 'Manage'", uiOutput("ui_Manage")),
+        # conditionalPanel("input.tabs_data == 'Manage'", uiOutput("ui_Manage")),
         # conditionalPanel("input.tabs_data == 'View'", uiOutput("ui_View")),
         conditionalPanel("input.tabs_data == 'Pivot'",uiOutput("ui_Pivotr")),
         conditionalPanel("input.tabs_data == 'Visualize'", uiOutput("ui_Visualize"))
@@ -35,13 +35,13 @@ output$ui_data <- renderUI({
         ),
       mainPanel(
         tabsetPanel(id = "tabs_data",
-          tabPanel("Manage",
-            conditionalPanel("input.dman_preview == 'preview'", h2("Data preview"), htmlOutput("htmlDataExample")),
-            conditionalPanel("input.dman_preview == 'str'", h2("Data structure"), verbatimTextOutput("strData")),
-            conditionalPanel("input.dman_preview == 'summary'", h2("Data summary"), verbatimTextOutput("summaryData")),
-            conditionalPanel("input.man_add_descr == false", uiOutput("dataDescriptionHTML")),
-            conditionalPanel("input.man_add_descr == true", uiOutput("dataDescriptionMD"))
-          ),
+          # tabPanel("Manage",
+          #   conditionalPanel("input.dman_preview == 'preview'", h2("Data preview"), htmlOutput("htmlDataExample")),
+          #   conditionalPanel("input.dman_preview == 'str'", h2("Data structure"), verbatimTextOutput("strData")),
+          #   conditionalPanel("input.dman_preview == 'summary'", h2("Data summary"), verbatimTextOutput("summaryData")),
+          #   conditionalPanel("input.man_add_descr == false", uiOutput("dataDescriptionHTML")),
+          #   conditionalPanel("input.man_add_descr == true", uiOutput("dataDescriptionMD"))
+          # ),
           # tabPanel("View",
           #   downloadLink("dl_view_tab", "", class = "fa fa-download alignright"),
           #   DT::dataTableOutput("dataviewer")
