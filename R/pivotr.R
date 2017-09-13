@@ -151,7 +151,7 @@ pivotr <- function(dataset,
   nrow_tab <- nrow(tab) - 1
 
   ## ensure we don't have invalid column names
-  colnames(tab) <- make.names(colnames(tab))
+  #colnames(tab) <- make.names(colnames(tab))
 
   ## filtering the table if desired
   if (tabfilt != "")
