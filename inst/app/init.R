@@ -17,7 +17,9 @@ remove_session_files <- function(st = Sys.time()) {
   }
 }
 
-remove_session_files()
+remove_session_files(Sys.time()+60*60*24*14) # remove this when deploying to client
+# 60*60*24*14 - 60s, 60min, 24h, 14 days - so that there is always removed session
+# as by default the session is stored for 7 days
 
 ## from Joe Cheng's https://github.com/jcheng5/shiny-resume/blob/master/session.R
 isolate({
