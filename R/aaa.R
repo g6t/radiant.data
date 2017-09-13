@@ -119,33 +119,6 @@ NULL
 #' @format A data frame with 1043 rows and 10 variables
 NULL
 
-#' Comic publishers
-#' @details List of comic publishers from \url{http://stat545-ubc.github.io/bit001_dplyr-cheatsheet.html}. The dataset is used to illustrate data merging / joining. Description provided in attr(publishers,"description")
-#' @docType data
-#' @keywords datasets
-#' @name publishers
-#' @usage data(publishers)
-#' @format A data frame with 3 rows and 2 variables
-NULL
-
-#' Super heroes
-#' @details List of super heroes from \url{http://stat545-ubc.github.io/bit001_dplyr-cheatsheet.html}. The dataset is used to illustrate data merging / joining. Description provided in attr(superheroes,"description")
-#' @docType data
-#' @keywords datasets
-#' @name superheroes
-#' @usage data(superheroes)
-#' @format A data frame with 7 rows and 4 variables
-NULL
-
-#' Avengers
-#' @details List of avengers. The dataset is used to illustrate data merging / joining. Description provided in attr(avengers,"description")
-#' @docType data
-#' @keywords datasets
-#' @name avengers
-#' @usage data(avengers)
-#' @format A data frame with 7 rows and 4 variables
-NULL
-
 #' spt_d_tidy
 #' @details details
 #' @docType data
