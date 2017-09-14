@@ -1,10 +1,16 @@
 # deplyoyment
 library(rsconnect)
+# tokens from here https://www.shinyapps.io/admin/#/tokens
 rsconnect::setAccountInfo(
   name='marcinkosinski',
-  token='88CE927C2782C4935720D16C46D3A2A9',
-  secret='U7ToUMat1T2pg/xy2kB82tmZMWWMWb3yvCrkGwFe'
+  token='',
+  secret=''
 )
+
+library(devtools)
+# auth_token can be gained from https://github.com/settings/tokens/new
+install_github("g6t/radiant.data", auth_token = '', ref = 'reduced')
+
 setwd('inst/app')
-deployApp(appName = 'radiant_data_test', appDir = 'inst/app')
-setq('../../')
+deployApp(appName = 'radiant_data_test')
+#setwd('../../')
