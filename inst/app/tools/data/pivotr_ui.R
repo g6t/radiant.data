@@ -225,7 +225,7 @@ output$pivotr <- DT::renderDataTable({
       pvt,
       format = input$pvt_format,
       perc = input$pvt_perc,
-      dec = pvt_dec,
+      dec = input$pvt_dec,
       searchCols = searchCols,
       order = order,
       pageLength = pageLength
@@ -234,12 +234,12 @@ output$pivotr <- DT::renderDataTable({
 })
 
 output$pivotr_chi2 <- renderPrint({
-  req(input$pvt_chi2, pvt_dec)
+  req(input$pvt_chi2, input$pvt_dec)
   .pivotr() %>%
     {if (is.null(.))
        return(invisible())
      else
-       summary(., chi2 = TRUE, dec = pvt_dec, shiny = TRUE)
+       summary(., chi2 = TRUE, dec = input$pvt_dec, shiny = TRUE)
     }
 })
 
@@ -370,8 +370,8 @@ observeEvent(input$pivotr_report, {
     xcmd <- paste0(xcmd, ", format = \"", input$pvt_format, "\"")
   if (isTRUE(input$pvt_perc))
     xcmd <- paste0(xcmd, ", perc = ", input$pvt_perc)
-  if (!is_empty(pvt_dec, 3))
-    xcmd <- paste0(xcmd, ", dec = ", pvt_dec)
+  if (!is_empty(input$pvt_dec, 3))
+    xcmd <- paste0(xcmd, ", dec = ", input$pvt_dec)
   if (!is_empty(r_state$pivotr_state$length, 10))
     xcmd <- paste0(xcmd, ", pageLength = ", r_state$pivotr_state$length)
   xcmd <- paste0(xcmd, ") %>% render\n#store(result, name = \"", input$pvt_dat, "\")")
