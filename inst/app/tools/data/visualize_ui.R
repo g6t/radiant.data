@@ -25,6 +25,11 @@ viz_inputs <- reactive({
 # Vizualize data
 #######################################
 output$ui_viz_type <- renderUI({
+
+  if (!("numeric" %in% sapply(input$dataset, class))) {
+    viz_type <- viz_type[viz_type != "scatter"]
+  }
+
   selectInput(inputId = "viz_type", label = "Plot-type:", choices = viz_type,
     selected = state_multiple("viz_type", viz_type),
     multiple = FALSE)
