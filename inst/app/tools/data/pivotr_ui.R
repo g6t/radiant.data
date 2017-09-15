@@ -108,13 +108,13 @@ output$ui_Pivotr <- renderUI({
         ),
         checkboxInput("pvt_flip", "Flip", value = state_init("pvt_flip", FALSE))
       )
-    ),
-    wellPanel(
-      tags$table(
-        tags$td(textInput("pvt_dat", "Store as:", paste0(input$dataset,"_pvt"))),
-        tags$td(actionButton("pvt_store", "Store"), style = "padding-top:30px;")
-      )
     )#,
+    # wellPanel(
+    #   tags$table(
+    #     tags$td(textInput("pvt_dat", "Store as:", paste0(input$dataset,"_pvt"))),
+    #     tags$td(actionButton("pvt_store", "Store"), style = "padding-top:30px;")
+    #   )
+    #),
     # help_and_report(
     #   modal_title = "Pivotr",
     #   fun_name = "pivotr",
