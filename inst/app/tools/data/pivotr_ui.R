@@ -249,10 +249,10 @@ output$dl_pivot_tab <- downloadHandler(
   }
 )
 
-pvt_plot_width <- function() 750
+pvt_plot_width <- function() 1550
 pvt_plot_height <- function() {
   pvt <- .pivotr()
-  if (is.null(pvt)) return(400)
+  if (is.null(pvt)) return(800)
   pvt %<>% pvt_sorter(rows = r_data$pvt_rows)
   if (length(input$pvt_cvars) > 2) {
     pvt$tab %>%
@@ -262,11 +262,11 @@ pvt_plot_height <- function() {
       {. * 200}
   } else if (input$pvt_flip) {
     if (length(input$pvt_cvars) == 2)
-      max(400, ncol(pvt$tab) * 15)
+      max(800, ncol(pvt$tab) * 15)
     else
-      max(400, nrow(pvt$tab) * 15)
+      max(800, nrow(pvt$tab) * 15)
   } else {
-    400
+    800
   }
 }
 

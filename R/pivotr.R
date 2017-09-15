@@ -410,6 +410,7 @@ plot.pivotr <- function(x,
   tab <- object$tab %>% {filter(., .[[1]] != "Total")}
 
   if (length(cvars) == 1) {
+    tab[[cvars]] <- str_wrap(tab[[cvars]], 35)
     p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
         geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol)
   } else if (length(cvars) == 2) {
@@ -423,8 +424,9 @@ plot.pivotr <- function(x,
     p <- tab %>% gather(!! cvars[1], !! nvar, !! setdiff(colnames(.),cvars[2])) %>%
       na.omit %>%
       mutate(!!! dots) %>%
-      ggplot(aes_string(x = cvars[1], y = nvar, fill = cvars[2])) +
-        geom_bar(stat = "identity", position = type, alpha = .7)
+      ggplot(aes_string(x = paste0('str_wrap(',cvars[1], ', 35)'), y = nvar, fill = cvars[2])) +
+        geom_bar(stat = "identity", position = type, alpha = .7) +
+        labs(x = cvars[1])
   } else if (length(cvars) == 3) {
 
     ctot <- which(colnames(tab) == "Total")
@@ -440,9 +442,10 @@ plot.pivotr <- function(x,
     p <- tab %>% gather(!! cvars[1], !! nvar, !! setdiff(colnames(.),cvars[2:3])) %>%
       na.omit %>%
       mutate(!!! dots) %>%
-      ggplot(aes_string(x = cvars[1], y = nvar, fill = cvars[2])) +
+      ggplot(aes_string(x = paste0('str_wrap(',cvars[1], ', 35)'), y = nvar, fill = cvars[2])) +
         geom_bar(stat = "identity", position = type, alpha = .7) +
-        facet_grid(paste(cvars[3], '~ .'))
+        facet_grid(paste(cvars[3], '~ .')) +
+        labs(x = cvars[1])
   } else {
     ## No plot returned if more than 3 grouping variables are selected
     return(invisible())
@@ -457,6 +460,8 @@ plot.pivotr <- function(x,
   } else {
     p <- p + ylab(paste0(nvar, " (", names(make_funs(object$fun)), ")"))
   }
+
+  p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   sshhr(p)
 }
