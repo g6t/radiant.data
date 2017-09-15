@@ -34,7 +34,7 @@ output$ui_pvt_cvars <- renderUI({
 })
 
 output$ui_pvt_nvar <- renderUI({
-  isNum <- .getclass() %in% c("integer","numeric","factor","logical")
+  isNum <- .getclass() %in% c("integer","numeric")#,"factor","logical")
   vars <- c("None", varnames()[isNum])
 
   if (any(vars %in% input$pvt_cvars)) {
@@ -73,13 +73,21 @@ output$ui_pvt_format  <- renderUI({
     multiple = FALSE)
 })
 
+# https://stackoverflow.com/a/38899895/3857701
+output$numericPanelStatus <- reactive({
+  any(.getclass() %in% c("integer","numeric"))
+})
+outputOptions(output, "numericPanelStatus", suspendWhenHidden = FALSE)
+
 output$ui_Pivotr <- renderUI({
   tagList(
     wellPanel(
       checkboxInput("pvt_pause", "Pause pivot", state_init("pvt_pause", FALSE)),
       uiOutput("ui_pvt_cvars"),
-      uiOutput("ui_pvt_nvar"),
-      conditionalPanel("input.pvt_nvar != 'None'", uiOutput("ui_pvt_fun")),
+      conditionalPanel("output.numericPanelStatus", uiOutput("ui_pvt_nvar")),
+      conditionalPanel('output.numericPanelStatus',
+        conditionalPanel("input.pvt_nvar != 'None'", uiOutput("ui_pvt_fun"))
+      ),
       uiOutput("ui_pvt_normalize"),
       uiOutput("ui_pvt_format"),
       # numericInput("pvt_dec", "Decimals:",
@@ -122,6 +130,7 @@ output$ui_Pivotr <- renderUI({
     # )
   )
 })
+
 
 pvt_args <- as.list(formals(pivotr))
 
