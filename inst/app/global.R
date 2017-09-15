@@ -1,3 +1,10 @@
+load('spt_d_tidy_answers_dict.rda')
+lookup_table <- spt_d_tidy_answers_dict
+colnames(lookup_table) <-
+  c('variable',  'client_name', 'syntactically_valid_name')
+
+library(stringr)
+
 ## based on https://github.com/rstudio/shiny/issues/1237
 suppressWarnings(
   try(

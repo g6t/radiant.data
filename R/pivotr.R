@@ -409,9 +409,36 @@ plot.pivotr <- function(x,
   tab <- object$tab %>% {filter(., .[[1]] != "Total")}
 
   if (length(cvars) == 1) {
-    tab[[cvars]] <- str_wrap(tab[[cvars]], 35)
+    tab[[cvars]] <- str_wrap(tab[[cvars]], 35) # comment that out for attempt 1
+    #### attempt 1 ####
+    # tab <- tab %>%
+    #   left_join(
+    #     lookup_table %>%
+    #       filter(variable == !! cvars) %>%
+    #       {
+    #         .[[cvars]] <- .[['syntactically_valid_name']]
+    #         .
+    #       } %>%
+    #       select(-variable, -syntactically_valid_name),
+    #     by = cvars
+    #   )
+    #### and then change `cvars` to `'client_name'` in the aes_string
+
     p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
-        geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol)
+        geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol) #+
+      #### attempt 2 ####
+      # but this results in empty labels
+      # scale_x_discrete(
+      #   labels = function(x) {
+      #     sapply(x, function(y){
+      #     lookup_table %>%
+      #       filter(variable == !! cvars) %>%
+      #       filter(syntactically_valid_name == !! y) %>%
+      #       magrittr::use_series(client_name) %>%
+      #       str_wrap(35)
+      #     })
+      #   })
+
   } else if (length(cvars) == 2) {
     ctot <- which(colnames(tab) == "Total")
     if (length(ctot) > 0) tab %<>% select(-matches("Total"))
