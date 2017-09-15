@@ -90,10 +90,10 @@ output$ui_Pivotr <- renderUI({
       ),
       uiOutput("ui_pvt_normalize"),
       uiOutput("ui_pvt_format"),
-      # numericInput("pvt_dec", "Decimals:",
-      #   value = state_init("pvt_dec", 3),
-      #   min = 0
-      # ),
+      numericInput("pvt_dec", "Decimals:",
+        value = state_init("pvt_dec", 3),
+        min = 0, max = 3
+      ),
       with(tags, table(
         tr(
           td(checkboxInput("pvt_tab", "Show table  ", value = state_init("pvt_tab", TRUE))),
@@ -225,7 +225,7 @@ output$pivotr <- DT::renderDataTable({
       pvt,
       format = input$pvt_format,
       perc = input$pvt_perc,
-      dec = 3,
+      dec = pvt_dec,
       searchCols = searchCols,
       order = order,
       pageLength = pageLength
@@ -234,12 +234,12 @@ output$pivotr <- DT::renderDataTable({
 })
 
 output$pivotr_chi2 <- renderPrint({
-  req(input$pvt_chi2, 3)
+  req(input$pvt_chi2, pvt_dec)
   .pivotr() %>%
     {if (is.null(.))
        return(invisible())
      else
-       summary(., chi2 = TRUE, dec = 3, shiny = TRUE)
+       summary(., chi2 = TRUE, dec = pvt_dec, shiny = TRUE)
     }
 })
 
@@ -370,8 +370,8 @@ observeEvent(input$pivotr_report, {
     xcmd <- paste0(xcmd, ", format = \"", input$pvt_format, "\"")
   if (isTRUE(input$pvt_perc))
     xcmd <- paste0(xcmd, ", perc = ", input$pvt_perc)
-  if (!is_empty(3, 3))
-    xcmd <- paste0(xcmd, ", dec = ", 3)
+  if (!is_empty(pvt_dec, 3))
+    xcmd <- paste0(xcmd, ", dec = ", pvt_dec)
   if (!is_empty(r_state$pivotr_state$length, 10))
     xcmd <- paste0(xcmd, ", pageLength = ", r_state$pivotr_state$length)
   xcmd <- paste0(xcmd, ") %>% render\n#store(result, name = \"", input$pvt_dat, "\")")
