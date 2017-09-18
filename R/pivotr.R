@@ -456,10 +456,21 @@ plot.pivotr <- function(x,
     p <- tab %>% gather(!! cvars[1], !! nvar, !! setdiff(colnames(.),cvars[2:3])) %>%
       na.omit %>%
       mutate(!!! dots) %>%
-      ggplot(aes_string(x = paste0('str_wrap(',cvars[1], ', 35)'), y = nvar, fill = cvars[2])) +
+      ggplot(aes_string(x = cvars[1], y = nvar, fill = cvars[2])) +
         geom_bar(stat = "identity", position = type, alpha = .7) +
         facet_grid(paste(cvars[3], '~ .')) +
-        labs(x = cvars[1])
+      #labs(x = cvars[1]) #+
+      scale_x_discrete(
+        labels = function(x) {
+          sapply(x, function(y){
+            lookup_table %>%
+              filter_(paste0('variable == "', cvars, '"')) %>%
+              filter_(paste0('syntactically_valid_name == "', y, '"')) %>%
+              magrittr::use_series(client_name) %>%
+              str_wrap(20) %>%
+              unique()
+          })
+        })
   } else {
     ## No plot returned if more than 3 grouping variables are selected
     return(invisible())
