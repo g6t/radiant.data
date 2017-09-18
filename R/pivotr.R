@@ -410,34 +410,9 @@ plot.pivotr <- function(x,
 
   if (length(cvars) == 1) {
     tab[[cvars]] <- str_wrap(tab[[cvars]], 35) # comment that out for attempt 1
-    #### attempt 1 ####
-    # tab <- tab %>%
-    #   left_join(
-    #     lookup_table %>%
-    #       filter(variable == !! cvars) %>%
-    #       {
-    #         .[[cvars]] <- .[['syntactically_valid_name']]
-    #         .
-    #       } %>%
-    #       select(-variable, -syntactically_valid_name),
-    #     by = cvars
-    #   )
-    #### and then change `cvars` to `'client_name'` in the aes_string
 
     p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
-        geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol) #+
-      #### attempt 2 ####
-      # but this results in empty labels
-      # scale_x_discrete(
-      #   labels = function(x) {
-      #     sapply(x, function(y){
-      #     lookup_table %>%
-      #       filter(variable == !! cvars) %>%
-      #       filter(syntactically_valid_name == !! y) %>%
-      #       magrittr::use_series(client_name) %>%
-      #       str_wrap(35)
-      #     })
-      #   })
+        geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol)
 
   } else if (length(cvars) == 2) {
     ctot <- which(colnames(tab) == "Total")
@@ -452,7 +427,20 @@ plot.pivotr <- function(x,
       mutate(!!! dots) %>%
       ggplot(aes_string(x = paste0('str_wrap(',cvars[1], ', 35)'), y = nvar, fill = cvars[2])) +
         geom_bar(stat = "identity", position = type, alpha = .7) +
-        labs(x = cvars[1])
+        labs(x = cvars[1]) #+
+    # scale_x_discrete(
+    #   labels = function(x) {
+    #     sapply(x, function(y){
+    #       lookup_table %>%
+    #         filter_(paste0('variable == "', cvars, '"')) %>%
+    #         filter_(paste0('syntactically_valid_name == "', y, '"')) %>%
+    #         magrittr::use_series(client_name) %>%
+    #         str_wrap(20) %>%
+    #         unique()
+    #     })
+    #   })
+
+
   } else if (length(cvars) == 3) {
 
     ctot <- which(colnames(tab) == "Total")
@@ -487,7 +475,7 @@ plot.pivotr <- function(x,
     p <- p + ylab(paste0(nvar, " (", names(make_funs(object$fun)), ")"))
   }
 
-  p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  # p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   sshhr(p)
 }
