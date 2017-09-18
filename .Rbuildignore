@@ -7,3 +7,4 @@ coverage.R
 ^build$
 cran-comments.md
 dep.R
+dev/
