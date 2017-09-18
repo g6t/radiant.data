@@ -9,7 +9,8 @@ lookup_table <- spt_d_tidy_answers_dict
 colnames(lookup_table) <-
   c('variable',  'client_name', 'syntactically_valid_name')
 tab <- spt_d_tidy %>%
-  count(descriptions)
+  count(descriptions) %>%
+  mutate(descriptions = make.names(descriptions))
 
 #### plot parameters ####
 cvars <- 'descriptions'
@@ -21,10 +22,11 @@ p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
     labels = function(x) {
       sapply(x, function(y){
       lookup_table %>%
-        filter(variable == !! cvars) %>%
-        filter(syntactically_valid_name == !! y) %>%
+        filter_(paste0('variable == "', cvars, '"')) %>%
+        filter_(paste0('syntactically_valid_name == "', y, '"')) %>%
         magrittr::use_series(client_name) %>%
-        str_wrap(35)
+        str_wrap(20) %>%
+        unique()
       })
     })
 p
