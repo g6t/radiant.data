@@ -28,6 +28,10 @@ output$ui_viz_type <- renderUI({
 
   if (!("numeric" %in% sapply(input$dataset, class))) {
     viz_type <- viz_type[viz_type != "scatter"]
+    viz_type <- viz_type[viz_type != "density"]
+    viz_type <- viz_type[viz_type != "box"]
+    viz_type <- viz_type[viz_type != "line"]
+    viz_type <- viz_type[viz_type != "surface"]
   }
 
   selectInput(inputId = "viz_type", label = "Plot-type:", choices = viz_type,
