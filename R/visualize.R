@@ -549,8 +549,15 @@ visualize <- function(dataset, xvar,
     }
   }
 
+  for(i in seq_along(plot_list)) {
+    plot_list[[i]] <-
+      plot_list[[i]] +
+      theme(axis.text.x = element_text(size = 20),
+            axis.title = element_text(size = 20))
+  }
+
   if (custom)
-    if (length(plot_list) == 1) return(plot_list[[1]]) else return(plot_list)
+    if (length(plot_list) == 1) { return(plot_list[[1]]) } else { return(plot_list) }
 
   # plty = TRUE
   # if (plty)

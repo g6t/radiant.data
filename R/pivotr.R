@@ -507,6 +507,10 @@ plot.pivotr <- function(x,
   }
 
   # p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  p <- p +
+    theme(axis.text.x = element_text(size = 20),
+          axis.title = element_text(size = 20),
+          legend.position = "top")
 
   sshhr(p)
 }

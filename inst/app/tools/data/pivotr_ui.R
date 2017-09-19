@@ -258,7 +258,7 @@ output$dl_pivot_tab <- downloadHandler(
   }
 )
 
-pvt_plot_width <- function() 1550
+pvt_plot_width <- function() 1950
 pvt_plot_height <- function() {
   pvt <- .pivotr()
   if (is.null(pvt)) return(800)
