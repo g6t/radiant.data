@@ -292,6 +292,22 @@ dtab.pivotr  <- function(object,
   tab <- object$tab
   cvar <- object$cvars[1]
   cvars <- object$cvars %>% {if (length(.) > 1) .[-1] else .}
+
+
+  cnames <-
+    data.frame(
+      syntactically_valid_name = colnames(tab),
+      stringsAsFactors = FALSE
+    ) %>%
+    left_join(
+      lookup_table %>%
+        select(syntactically_valid_name, client_name) %>%
+        unique(),
+      by = 'syntactically_valid_name'
+    ) %>%
+    mutate(take = ifelse(is.na(client_name), syntactically_valid_name, client_name)) %>%
+    use_series(take)
+  colnames(tab) <- cnames
   cn <- colnames(tab) %>% {.[-which(cvars %in% .)]}
 
   ## column names without total
@@ -324,7 +340,11 @@ dtab.pivotr  <- function(object,
   ## for display options see https://datatables.net/reference/option/dom
   dom <- if (nrow(tab) < 11) "t" else "ltip"
   fbox <- if (nrow(tab) > 5e6) "none" else list(position = "top")
+
+
+
   dt_tab <- {if (!perc) rounddf(tab, dec) else tab} %>%
+
   DT::datatable(
     container = sketch,
     selection = "none",
