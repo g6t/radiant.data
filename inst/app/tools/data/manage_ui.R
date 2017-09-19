@@ -291,9 +291,9 @@ observeEvent(input$uploadfile, {
                  sep = input$man_sep, dec = input$man_dec,
                  n_max = n_max)
 
-  updateSelectInput(session, "dataset", 
-    label = "Datasets:", 
-    choices = r_data$datasetlist, 
+  updateSelectInput(session, "dataset",
+    label = "Datasets:",
+    choices = r_data$datasetlist,
     selected = r_data$datasetlist[1]
   )
 })
@@ -324,9 +324,9 @@ observeEvent(input$url_rda_load, {
   }
   r_data[["datasetlist"]] <<- c(objname, r_data[["datasetlist"]]) %>% unique
   r_data[[paste0(objname,"_descr")]] <- attr(r_data[[objname]], "description")
-  updateSelectInput(session, "dataset", 
-    label = "Datasets:", 
-    choices = r_data$datasetlist, 
+  updateSelectInput(session, "dataset",
+    label = "Datasets:",
+    choices = r_data$datasetlist,
     selected = r_data$datasetlist[1]
   )
 })
@@ -342,12 +342,12 @@ observeEvent(input$url_csv_load, {
   if (is(ret, "try-error")) {
     upload_error_handler(objname, "### There was an error loading the csv file from the provided url.")
   } else {
-    dat <- loadcsv(con, 
-      .csv = input$man_read.csv, 
-      header = input$man_header, 
-      n_max = input$man_n_max, 
-      sep = input$man_sep, 
-      dec = input$man_dec, 
+    dat <- loadcsv(con,
+      .csv = input$man_read.csv,
+      header = input$man_header,
+      n_max = input$man_n_max,
+      sep = input$man_sep,
+      dec = input$man_dec,
       saf = input$man_str_as_factor
     )
 
@@ -360,9 +360,9 @@ observeEvent(input$url_csv_load, {
 
   r_data[["datasetlist"]] <<- c(objname, r_data[["datasetlist"]]) %>% unique
   r_data[[paste0(objname,"_descr")]] <- attr(r_data[[objname]], "description")
-  updateSelectInput(session, "dataset", 
-    label = "Datasets:", 
-    choices = r_data$datasetlist, 
+  updateSelectInput(session, "dataset",
+    label = "Datasets:",
+    choices = r_data$datasetlist,
     selected = r_data$datasetlist[1]
   )
 })
@@ -406,7 +406,7 @@ output$refreshOnUpload <- renderUI({
   load(inFile$datapath, envir = tmpEnv)
 
   if (is.null(tmpEnv$r_state) && is.null(tmpEnv$r_data)) {
-    ## don't destroy session when attempting to load a 
+    ## don't destroy session when attempting to load a
     ## file that is not a statefile
     # saveSession()
     mess <- paste0("Unable to restore state from the selected file. Choose another statefile or select 'rda' from the 'Load data of type' dropdown and try again")
@@ -425,7 +425,7 @@ output$refreshOnUpload <- renderUI({
   ## https://stackoverflow.com/questions/22549146/ace-text-editor-displays-text-characters-in-place-of-spaces
   if (!is.null(tmpEnv$r_state)) {
     for (i in names(tmpEnv$r_state)) {
-      if (is.character(tmpEnv$r_state[[i]])) 
+      if (is.character(tmpEnv$r_state[[i]]))
         tmpEnv$r_state[[i]] %<>% fixMS(.)
     }
   }
@@ -433,7 +433,7 @@ output$refreshOnUpload <- renderUI({
   ## remove characters that may cause problems in shinyAce from r_data
   if (!is.null(tmpEnv$r_data)) {
     for (i in names(tmpEnv$r_data)) {
-      if (is.character(tmpEnv$r_data[[i]])) 
+      if (is.character(tmpEnv$r_data[[i]]))
         tmpEnv$r_data[[i]] %<>% fixMS(.)
     }
   }
@@ -468,9 +468,9 @@ saveState <- function(filename) {
 }
 
 output$saveState <- downloadHandler(
-  filename = function() { 
+  filename = function() {
     if (is.null(r_state$state_name)) {
-      paste0("radiant-state-",Sys.Date(),".rda") 
+      paste0("radiant-state-",Sys.Date(),".rda")
     } else {
       r_state$state_name
     }
@@ -521,6 +521,7 @@ output$ui_datasets <- renderUI({
   tagList(
     selectInput(inputId = "dataset", label = "Datasets:", choices = r_data$datasetlist,
       selected = state_init("dataset"), multiple = FALSE),
+    checkboxInput("na.rm", "Omit NA?", FALSE),
     conditionalPanel(condition = "input.tabs_data == 'Manage'",
       checkboxInput("man_add_descr","Add/edit data description", FALSE),
       conditionalPanel(condition = "input.man_add_descr == true",
@@ -530,9 +531,9 @@ output$ui_datasets <- renderUI({
       conditionalPanel(condition = "input.man_rename_data == true",
         uiOutput("uiRename")
       ),
-      radioButtons("dman_preview", "Display:", 
-        c("preview" = "preview", "str" = "str", "summary" = "summary"), 
-        selected = "preview", 
+      radioButtons("dman_preview", "Display:",
+        c("preview" = "preview", "str" = "str", "summary" = "summary"),
+        selected = "preview",
         inline = TRUE
       )
     )

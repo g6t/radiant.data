@@ -145,6 +145,8 @@ pvt_inputs <- reactive({
   ## loop needed because reactive values don't allow single bracket indexing
   pvt_args$data_filter <- ""#if (input$show_filter) input$data_filter else ""
   pvt_args$dataset <- input$dataset
+  pvt_args$na.rm <- input$na.rm
+
   for (i in r_drop(names(pvt_args)))
     pvt_args[[i]] <- input[[paste0("pvt_",i)]]
 

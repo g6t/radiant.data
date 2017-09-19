@@ -30,11 +30,15 @@ pivotr <- function(dataset,
                    tabsort = "",
                    nr = NULL,
                    data_filter = "",
-                   shiny = FALSE) {
+                   shiny = FALSE,
+                   na.rm = FALSE) {
 
   vars <- if (nvar == "None") cvars else c(cvars, nvar)
   fill <- if (nvar == "None") 0 else NA
-  dat <- getdata(dataset, vars, filt = data_filter, na.rm = FALSE)
+  dat <- getdata(dataset, vars, filt = data_filter, na.rm = na.rm) #this na.rm doesn't work
+  if (na.rm)
+    dat <- na.omit(dat)
+
   if (!is_string(dataset))
     dataset <- deparse(substitute(dataset)) %>% set_attr("df", TRUE)
 
