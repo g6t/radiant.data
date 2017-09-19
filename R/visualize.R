@@ -247,7 +247,7 @@ visualize <- function(dataset, xvar,
 
       hist_par <- list(alpha = alpha, position = "identity")
       if (fill == "none") hist_par[["fill"]] <- fillcol
-      plot_list[[i]] <- ggplot(dat, aes_string(x = i))
+      plot_list[[i]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'))) + labs(x=i)
       if ("density" %in% axes && !"factor" %in% dc[i]) {
         hist_par <- c(list(aes(y = ..density..)), hist_par)
         plot_list[[i]] <- plot_list[[i]] + geom_density(color = linecol, size = .5)
@@ -265,7 +265,7 @@ visualize <- function(dataset, xvar,
     }
   } else if (type == "density") {
     for (i in xvar) {
-      plot_list[[i]] <- ggplot(dat, aes_string(x = i)) +
+      plot_list[[i]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'))) + labs(x=i) +
         if (fill == "none")
           geom_density(adjust = smooth, color = linecol, fill = fillcol, alpha = alpha, size = 1)
         else
@@ -295,7 +295,7 @@ visualize <- function(dataset, xvar,
       if ("log_x" %in% axes && dc[i] == "factor") axes <- sub("log_x","",axes)
 
       for (j in yvar) {
-        plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j)) + gs
+        plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j)) + labs(x=i) + gs
 
         if ("log_x" %in% axes) plot_list[[itt]] <- plot_list[[itt]] + xlab(paste("log", i))
         if ("log_y" %in% axes) plot_list[[itt]] <- plot_list[[itt]] + ylab(paste("log", j))
@@ -384,7 +384,7 @@ visualize <- function(dataset, xvar,
       interpolate <- ifelse ("interpolate" %in% check, TRUE, FALSE)
 
       for (j in yvar) {
-        plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j, fill = fill)) +
+        plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j, fill = fill))+ labs(x=i) +
           geom_raster(interpolate = interpolate)
 
         if ("log_x" %in% axes) plot_list[[itt]] <- plot_list[[itt]] + xlab(paste("log", i))
@@ -404,10 +404,10 @@ visualize <- function(dataset, xvar,
             tmp <- dat %>% group_by_at(.vars = tbv) %>% select_at(.vars = c(tbv, j)) %>%
               summarise_all(make_funs(fun))
             colnames(tmp)[ncol(tmp)] <- j
-            plot_list[[itt]] <- ggplot(tmp, aes_string(x = i, y = j)) + geom_line(aes(group = 1), color = linecol)
+            plot_list[[itt]] <- ggplot(tmp, aes_string(x = paste0('str_wrap(',i,',20)'), y = j))+ labs(x=i) + geom_line(aes(group = 1), color = linecol)
             if (nrow(tmp) < 101) plot_list[[itt]] <- plot_list[[itt]] + geom_point(color = linecol)
           } else {
-            plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j)) + geom_line(color = linecol)
+            plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j))+ labs(x=i) + geom_line(color = linecol)
           }
         } else {
           if (dc[i] %in% c("factor","date")) {
@@ -415,10 +415,10 @@ visualize <- function(dataset, xvar,
             tmp <- dat %>% group_by_at(.vars = tbv) %>% select_at(.vars = c(tbv, color, j)) %>%
               summarise_all(make_funs(fun))
             colnames(tmp)[ncol(tmp)] <- j
-            plot_list[[itt]] <- ggplot(tmp, aes_string(x = i, y = j, color = color, group = color)) + geom_line()
+            plot_list[[itt]] <- ggplot(tmp, aes_string(x = paste0('str_wrap(',i,',20)'), y = j, color = color, group = color)) + labs(x=i) + geom_line()
             if (nrow(tmp) < 101) plot_list[[itt]] <- plot_list[[itt]] + geom_point()
           } else {
-            plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j, color = color, group = color)) + geom_line()
+            plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j, color = color, group = color)) + labs(x=i) + geom_line()
           }
         }
         if ("log_x" %in% axes) plot_list[[itt]] <- plot_list[[itt]] + xlab(paste("log", i))
@@ -449,7 +449,7 @@ visualize <- function(dataset, xvar,
           tmp[[i]] %<>% factor(., levels = unique(.))
         }
 
-        plot_list[[itt]] <- ggplot(tmp, aes_string(x = i, y = j)) +
+        plot_list[[itt]] <- ggplot(tmp, aes_string(x = paste0('str_wrap(',i,',20)'), y = j)) + labs(x=i) +
           {if (fill == "none") {
             geom_bar(stat = "identity", position = "dodge", alpha = alpha, fill = fillcol)
            } else {
@@ -473,10 +473,10 @@ visualize <- function(dataset, xvar,
       if (!"factor" %in% dc[i]) dat[[i]] %<>% as_factor
       for (j in yvar) {
         if (color == "none") {
-          plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j)) +
+          plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j)) + labs(x=i) +
                               geom_boxplot(alpha = alpha, fill = fillcol)
         } else {
-          plot_list[[itt]] <- ggplot(dat, aes_string(x = i, y = j, fill = color)) +
+          plot_list[[itt]] <- ggplot(dat, aes_string(x = paste0('str_wrap(',i,',20)'), y = j, fill = color)) + labs(x=i)+
                               geom_boxplot(alpha = alpha)
         }
 
