@@ -175,7 +175,7 @@ if (!is.null(r_state$nav_radiant)) {
 
 isolate({
   if (is.null(r_data$plot_height)) r_data$plot_height <- 650
-  if (is.null(r_data$plot_width)) r_data$plot_width <- 650
+  if (is.null(r_data$plot_width)) r_data$plot_width <- 1750
 })
 
 ## 'sourcing' radiant's package functions in the server.R environment
