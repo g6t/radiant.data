@@ -553,6 +553,7 @@ visualize <- function(dataset, xvar,
     plot_list[[i]] <-
       plot_list[[i]] +
       theme(axis.text.x = element_text(size = 20),
+            axis.text.y = element_text(size = 20),
             axis.title = element_text(size = 20))
   }
 
