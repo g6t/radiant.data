@@ -433,7 +433,7 @@ plot.pivotr <- function(x,
   tab <- object$tab %>% {filter(., .[[1]] != "Total")}
 
   if (length(cvars) == 1) {
-    tab[[cvars]] <- str_wrap(tab[[cvars]], 35) # comment that out for attempt 1
+    tab[[cvars]] <- str_wrap(tab[[cvars]], 20) # comment that out for attempt 1
 
     p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
         geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol)
