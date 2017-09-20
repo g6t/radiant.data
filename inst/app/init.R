@@ -174,7 +174,7 @@ if (!is.null(r_state$nav_radiant)) {
 }
 
 isolate({
-  if (is.null(r_data$plot_height)) r_data$plot_height <- 950
+  if (is.null(r_data$plot_height)) r_data$plot_height <- 1250
   if (is.null(r_data$plot_width)) r_data$plot_width <- 1750
 })
 
