@@ -1,3 +1,4 @@
+library(dplyr)
 dict <- read.csv('name_dictionary.csv', stringsAsFactors = FALSE)
 lookup_table <- dict %>% select(-class)
 colnames(lookup_table) <-
