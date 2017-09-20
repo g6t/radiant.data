@@ -521,7 +521,7 @@ output$ui_datasets <- renderUI({
   tagList(
     selectInput(inputId = "dataset", label = "Datasets:", choices = r_data$datasetlist,
       selected = state_init("dataset"), multiple = FALSE),
-    checkboxInput("na.rm", "Omit NA?", FALSE),
+    checkboxInput("pvt_na.rm", "Omit NA?", FALSE),
     conditionalPanel(condition = "input.tabs_data == 'Manage'",
       checkboxInput("man_add_descr","Add/edit data description", FALSE),
       conditionalPanel(condition = "input.man_add_descr == true",

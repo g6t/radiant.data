@@ -145,7 +145,7 @@ pvt_inputs <- reactive({
   ## loop needed because reactive values don't allow single bracket indexing
   pvt_args$data_filter <- ""#if (input$show_filter) input$data_filter else ""
   pvt_args$dataset <- input$dataset
-  pvt_args$na.rm <- input$na.rm
+  # pvt_args$na.rm <- input$na.rm
 
   for (i in r_drop(names(pvt_args)))
     pvt_args[[i]] <- input[[paste0("pvt_",i)]]
@@ -351,47 +351,47 @@ observeEvent(input$pvt_store, {
   )
 })
 
-observeEvent(input$pivotr_report, {
-
-  inp_out <- list("","")
-  inp_out[[1]] <- clean_args(pvt_sum_inputs(), pvt_sum_args[-1])
-
-  if (input$pvt_plot == TRUE) {
-    inp_out[[2]] <- clean_args(pvt_plot_inputs(), pvt_plot_args[-1])
-    outputs <- c("summary","plot")
-    figs <- TRUE
-  } else {
-    outputs <- c("summary")
-    figs <- FALSE
-  }
-
-  ## get the state of the dt table
-  ts <- dt_state("pivotr")
-  xcmd <- paste0("#dtab(result")
-  if (!is_empty(input$pvt_format, "none"))
-    xcmd <- paste0(xcmd, ", format = \"", input$pvt_format, "\"")
-  if (isTRUE(input$pvt_perc))
-    xcmd <- paste0(xcmd, ", perc = ", input$pvt_perc)
-  if (!is_empty(input$pvt_dec, 3))
-    xcmd <- paste0(xcmd, ", dec = ", input$pvt_dec)
-  if (!is_empty(r_state$pivotr_state$length, 10))
-    xcmd <- paste0(xcmd, ", pageLength = ", r_state$pivotr_state$length)
-  xcmd <- paste0(xcmd, ") %>% render\n#store(result, name = \"", input$pvt_dat, "\")")
-
-  inp_main <- clean_args(pvt_inputs(), pvt_args)
-  if (ts$tabsort != "") inp_main <- c(inp_main, tabsort = ts$tabsort)
-  if (ts$tabfilt != "") inp_main <- c(inp_main, tabfilt = ts$tabfilt)
-  inp_main <- c(inp_main, nr = ts$nr - 1)
-
-  ## update R > Report
-  update_report(
-    inp_main = inp_main,
-    fun_name = "pivotr",
-    outputs = outputs,
-    inp_out = inp_out,
-    figs = figs,
-    fig.width = pvt_plot_width(),
-    fig.height = pvt_plot_height(),
-    xcmd = xcmd
-  )
-})
+# observeEvent(input$pivotr_report, {
+#
+#   inp_out <- list("","")
+#   inp_out[[1]] <- clean_args(pvt_sum_inputs(), pvt_sum_args[-1])
+#
+#   if (input$pvt_plot == TRUE) {
+#     inp_out[[2]] <- clean_args(pvt_plot_inputs(), pvt_plot_args[-1])
+#     outputs <- c("summary","plot")
+#     figs <- TRUE
+#   } else {
+#     outputs <- c("summary")
+#     figs <- FALSE
+#   }
+#
+#   ## get the state of the dt table
+#   ts <- dt_state("pivotr")
+#   xcmd <- paste0("#dtab(result")
+#   if (!is_empty(input$pvt_format, "none"))
+#     xcmd <- paste0(xcmd, ", format = \"", input$pvt_format, "\"")
+#   if (isTRUE(input$pvt_perc))
+#     xcmd <- paste0(xcmd, ", perc = ", input$pvt_perc)
+#   if (!is_empty(input$pvt_dec, 3))
+#     xcmd <- paste0(xcmd, ", dec = ", input$pvt_dec)
+#   if (!is_empty(r_state$pivotr_state$length, 10))
+#     xcmd <- paste0(xcmd, ", pageLength = ", r_state$pivotr_state$length)
+#   xcmd <- paste0(xcmd, ") %>% render\n#store(result, name = \"", input$pvt_dat, "\")")
+#
+#   inp_main <- clean_args(pvt_inputs(), pvt_args)
+#   if (ts$tabsort != "") inp_main <- c(inp_main, tabsort = ts$tabsort)
+#   if (ts$tabfilt != "") inp_main <- c(inp_main, tabfilt = ts$tabfilt)
+#   inp_main <- c(inp_main, nr = ts$nr - 1)
+#
+#   ## update R > Report
+#   update_report(
+#     inp_main = inp_main,
+#     fun_name = "pivotr",
+#     outputs = outputs,
+#     inp_out = inp_out,
+#     figs = figs,
+#     fig.width = pvt_plot_width(),
+#     fig.height = pvt_plot_height(),
+#     xcmd = xcmd
+#   )
+# })
