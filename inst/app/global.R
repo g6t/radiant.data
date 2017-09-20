@@ -1,5 +1,5 @@
-load('spt_d_tidy_answers_dict.rda')
-lookup_table <- spt_d_tidy_answers_dict
+dict <- read.csv('name_dictionary.csv', stringsAsFactors = FALSE)
+lookup_table <- dict %>% select(-class)
 colnames(lookup_table) <-
   c('variable',  'client_name', 'syntactically_valid_name')
 
@@ -49,7 +49,7 @@ init_data <- function() {
   ## are changed."
   r_data <- reactiveValues()
 
-  df_name <- getOption("radiant.init.data", default = "spt_d_tidy")
+  df_name <- getOption("radiant.init.data", default = "spt")
   if (file.exists(df_name)) {
     df <- load(df_name) %>% get
     df_name <- basename(df_name) %>% {gsub(paste0(".",tools::file_ext(.)),"",., fixed = TRUE)}
