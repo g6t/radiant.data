@@ -3,15 +3,6 @@
 ## when available
 ################################################################################
 
-## options to set for debugging
-# options(shiny.trace = TRUE)
-# options(shiny.reactlog = TRUE)
-# options(shiny.error = recover)
-# options(warn = 2)
-# options(warn = 0)
-## turn off warnings globally
-# options(warn=-1)
-
 ## set autoreload on if found TRUE in .Rprofile
 # options("autoreload")[[1]] %>%
 #   {options(shiny.autoreload = ifelse (!is.null(.) && ., TRUE, FALSE))}
@@ -26,7 +17,9 @@ remove_session_files <- function(st = Sys.time()) {
   }
 }
 
-remove_session_files()
+remove_session_files(Sys.time()+60*60*24*14) # remove this when deploying to client
+# 60*60*24*14 - 60s, 60min, 24h, 14 days - so that there is always removed session
+# as by default the session is stored for 7 days
 
 ## from Joe Cheng's https://github.com/jcheng5/shiny-resume/blob/master/session.R
 isolate({
@@ -181,8 +174,8 @@ if (!is.null(r_state$nav_radiant)) {
 }
 
 isolate({
-  if (is.null(r_data$plot_height)) r_data$plot_height <- 650
-  if (is.null(r_data$plot_width)) r_data$plot_width <- 650
+  if (is.null(r_data$plot_height)) r_data$plot_height <- 1450
+  if (is.null(r_data$plot_width)) r_data$plot_width <- 1750
 })
 
 ## 'sourcing' radiant's package functions in the server.R environment

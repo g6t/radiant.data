@@ -10,7 +10,7 @@ viz_args <- as.list(formals(visualize))
 ## list of function inputs selected by user
 viz_inputs <- reactive({
   ## loop needed because reactive values don't allow single bracket indexing
-  viz_args$data_filter <- if (input$show_filter) input$data_filter else ""
+  viz_args$data_filter <- ""#if (input$show_filter) input$data_filter else ""
   viz_args$dataset <- input$dataset
   viz_args$shiny <- input$shiny
   for (i in r_drop(names(viz_args)))
@@ -25,6 +25,15 @@ viz_inputs <- reactive({
 # Vizualize data
 #######################################
 output$ui_viz_type <- renderUI({
+
+  if (!("numeric" %in% sapply(input$dataset, class))) {
+    viz_type <- viz_type[viz_type != "scatter"]
+    viz_type <- viz_type[viz_type != "density"]
+    viz_type <- viz_type[viz_type != "box"]
+    viz_type <- viz_type[viz_type != "line"]
+    viz_type <- viz_type[viz_type != "surface"]
+  }
+
   selectInput(inputId = "viz_type", label = "Plot-type:", choices = viz_type,
     selected = state_multiple("viz_type", viz_type),
     multiple = FALSE)
@@ -151,11 +160,11 @@ output$ui_viz_axes <- renderUI({
   } else if (input$viz_type %in% c("bar","box")) {
     ind <- c(1, 3)
   }
-  if (!is_empty(input$viz_facet_row, ".") || !is_empty(input$viz_facet_col, "."))  ind <- c(ind, 4)
+  #if (!is_empty(input$viz_facet_row, ".") || !is_empty(input$viz_facet_col, "."))  ind <- c(ind, 4)
   if (input$viz_type == "bar" && input$viz_facet_row == "." && input$viz_facet_col == ".") ind <- c(ind, 6)
 
   checkboxGroupInput("viz_axes", NULL, viz_axes[ind],
-    selected = state_group("viz_axes", ""),
+    selected = state_group("viz_axes", viz_axes[1]),
     inline = TRUE)
 })
 
@@ -236,8 +245,8 @@ output$ui_Visualize <- renderUI({
           min = 0.1, max = 3, step = .1
         )
       ),
-      sliderInput("viz_alpha", label = "Opacity:", 
-        value = state_init("viz_alpha",.5), 
+      sliderInput("viz_alpha", label = "Opacity:",
+        value = state_init("viz_alpha",.5),
         min = 0, max = 1, step = .01
       ),
       tags$table(
@@ -251,10 +260,10 @@ output$ui_Visualize <- renderUI({
                              value = state_init("viz_plot_width", r_data$plot_width),
                              width = "117px"))
       )
-    ),
-    help_and_report(modal_title = "Visualize",
-                    fun_name = "visualize",
-                    help_file = inclRmd(file.path(getOption("radiant.path.data"),"app/tools/help/visualize.md")))
+    )#,
+    # help_and_report(modal_title = "Visualize",
+    #                 fun_name = "visualize",
+    #                 help_file = inclRmd(file.path(getOption("radiant.path.data"),"app/tools/help/visualize.md")))
   )
 })
 
@@ -329,24 +338,24 @@ output$visualize <- renderPlot({
 observeEvent(input$visualize_report, {
   ## resetting hidden elements to default values
   vi <- viz_inputs()
-  if (input$viz_type != "dist") 
+  if (input$viz_type != "dist")
     vi$bins <- viz_args$bins
-  if (!input$viz_type %in% c("density","scatter") || !"loess" %in% input$viz_check) 
+  if (!input$viz_type %in% c("density","scatter") || !"loess" %in% input$viz_check)
     vi$smooth <- viz_args$smooth
-  if (!input$viz_type %in% c("scatter", "box") && "jitter" %in% input$viz_check) 
+  if (!input$viz_type %in% c("scatter", "box") && "jitter" %in% input$viz_check)
     vi$check <- setdiff(vi$check, "jitter")
-  if (!input$viz_type %in% "scatter") 
+  if (!input$viz_type %in% "scatter")
     vi$size <- "none"
 
   inp_main <- clean_args(vi, viz_args)
   inp_main[["custom"]] <- FALSE
   update_report(
-    inp_main = inp_main, 
-    fun_name = "visualize", 
-    outputs = character(0), 
-    pre_cmd = "", 
-    figs = TRUE, 
-    fig.width = viz_plot_width(), 
+    inp_main = inp_main,
+    fun_name = "visualize",
+    outputs = character(0),
+    pre_cmd = "",
+    figs = TRUE,
+    fig.width = viz_plot_width(),
     fig.height = viz_plot_height()
   )
 })

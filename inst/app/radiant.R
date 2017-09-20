@@ -120,7 +120,7 @@ saveStateOnRefresh <- function(session = session) {
 
 groupable_vars <- reactive({
   .getdata() %>%
-    summarise_all(funs(is.factor(.) || is.logical(.) || lubridate::is.Date(.) || is.integer(.) ||
+    summarise_all(funs(is.factor(.) || is.logical(.) || lubridate::is.Date(.) ||
                         is.character(.) || ((length(unique(.))/n()) < .30))) %>%
     {which(. == TRUE)} %>%
     varnames()[.]
@@ -246,18 +246,18 @@ print.capture_plot <- function(x, ...) {
 ################################################################
 
 ## textarea where the return key submits the content
-returnTextAreaInput <- function(inputId, 
-                                label = NULL, 
+returnTextAreaInput <- function(inputId,
+                                label = NULL,
                                 rows = 2,
-                                placeholder = NULL, 
-                                resize = "vertical", 
+                                placeholder = NULL,
+                                resize = "vertical",
                                 value = "") {
   tagList(
     tags$label(label, `for` = inputId), br(),
     tags$textarea(
-      value, 
-      id = inputId, 
-      type = "text", 
+      value,
+      id = inputId,
+      type = "text",
       rows = rows,
       placeholder = placeholder,
       resize = resize,
@@ -266,15 +266,15 @@ returnTextAreaInput <- function(inputId,
   )
 }
 
-returnTextInput <- function(inputId, 
-                            label = NULL, 
-                            placeholder = NULL, 
+returnTextInput <- function(inputId,
+                            label = NULL,
+                            placeholder = NULL,
                             value = "") {
   tagList(
     tags$label(label, `for` = inputId),
     tags$input(
-      id = inputId, 
-      type = "text", 
+      id = inputId,
+      type = "text",
       value = value,
       placeholder = placeholder,
       class = "returnTextInput form-control"
@@ -331,10 +331,10 @@ register_plot_output <- function(fun_name, rfun_name,
   return(invisible())
 }
 
-plot_downloader <- function(plot_name, 
-                            width = plot_width, 
-                            height = plot_height, 
-                            pre = ".plot_", 
+plot_downloader <- function(plot_name,
+                            width = plot_width,
+                            height = plot_height,
+                            pre = ".plot_",
                             po = "dl_") {
 
   ## link and output name
@@ -355,7 +355,7 @@ plot_downloader <- function(plot_name,
         plot <- try(get(paste0(pre, plot_name))(), silent = TRUE)
         if (is(plot, "try-error") || is.character(plot) || is.null(plot)) {
           plot <- ggplot() + labs(title = "Plot not available")
-          pr <- 1; w <- h <- 500 
+          pr <- 1; w <- h <- 500
         }
 
         png(file = file, width = w, height = h, res = 96 * pr)
@@ -559,7 +559,7 @@ state_init <- function(var, init = "", na.rm = TRUE) {
     ivar <- input[[var]]
     if (var %in% names(input) || length(ivar) > 0) {
       ivar <- input[[var]]
-      if ((na.rm && is_empty(ivar)) || length(ivar) == 0) 
+      if ((na.rm && is_empty(ivar)) || length(ivar) == 0)
         r_state[[var]] <<- NULL
     } else {
       ivar <- .state_init(var, init, na.rm)

@@ -6,3 +6,5 @@ coverage.R
 ^\.travis\.yml$
 ^build$
 cran-comments.md
+dep.R
+dev/

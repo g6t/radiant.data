@@ -30,11 +30,31 @@ pivotr <- function(dataset,
                    tabsort = "",
                    nr = NULL,
                    data_filter = "",
-                   shiny = FALSE) {
+                   shiny = FALSE,
+                   na.rm = FALSE,
+                   cvars_levels = NULL) {
 
   vars <- if (nvar == "None") cvars else c(cvars, nvar)
   fill <- if (nvar == "None") 0 else NA
-  dat <- getdata(dataset, vars, filt = data_filter, na.rm = FALSE)
+  dat <- getdata(dataset, vars, filt = data_filter, na.rm = na.rm) #this na.rm doesn't work
+  if (na.rm)
+    dat <- na.omit(dat)
+  if (!is.null(cvars_levels)) {
+    dat_fil <-
+      dat %>%
+      filter_( str_c(cvars[1], ' %in% c("', paste0(cvars_levels, collapse = '", "'), '")'))
+
+    if ('NA' %in% cvars_levels) {
+      dat_fil <-
+        dat_fil %>%
+        bind_rows(
+          dat %>%
+          filter_(str_c('is.na(',cvars[1],')'))
+        )
+    }
+    dat <- dat_fil
+  }
+
   if (!is_string(dataset))
     dataset <- deparse(substitute(dataset)) %>% set_attr("df", TRUE)
 
@@ -292,6 +312,22 @@ dtab.pivotr  <- function(object,
   tab <- object$tab
   cvar <- object$cvars[1]
   cvars <- object$cvars %>% {if (length(.) > 1) .[-1] else .}
+
+
+  cnames <-
+    data.frame(
+      syntactically_valid_name = colnames(tab),
+      stringsAsFactors = FALSE
+    ) %>%
+    left_join(
+      lookup_table %>%
+        select(syntactically_valid_name, client_name) %>%
+        unique(),
+      by = 'syntactically_valid_name'
+    ) %>%
+    mutate(take = ifelse(is.na(client_name), syntactically_valid_name, client_name)) %>%
+    use_series(take)
+  colnames(tab) <- cnames
   cn <- colnames(tab) %>% {.[-which(cvars %in% .)]}
 
   ## column names without total
@@ -324,11 +360,16 @@ dtab.pivotr  <- function(object,
   ## for display options see https://datatables.net/reference/option/dom
   dom <- if (nrow(tab) < 11) "t" else "ltip"
   fbox <- if (nrow(tab) > 5e6) "none" else list(position = "top")
-  dt_tab <- {if (!perc) rounddf(tab, dec) else tab} %>%
+
+
+
+  dt_tab <- #{if (!perc) rounddf(tab, dec) else tab} %>%
+    rounddf(tab, dec) %>%
   DT::datatable(
     container = sketch,
     selection = "none",
     rownames = FALSE,
+    extensions = 'Buttons',
     filter = fbox,
     # extension = "KeyTable",
     style = "bootstrap",
@@ -408,8 +449,11 @@ plot.pivotr <- function(x,
   tab <- object$tab %>% {filter(., .[[1]] != "Total")}
 
   if (length(cvars) == 1) {
+    tab[[cvars]] <- str_wrap(tab[[cvars]], 20) # comment that out for attempt 1
+
     p <- ggplot(na.omit(tab), aes_string(x = cvars, y = nvar)) +
         geom_bar(stat = "identity", position = "dodge", alpha = .7, fill = fillcol)
+
   } else if (length(cvars) == 2) {
     ctot <- which(colnames(tab) == "Total")
     if (length(ctot) > 0) tab %<>% select(-matches("Total"))
@@ -422,7 +466,21 @@ plot.pivotr <- function(x,
       na.omit %>%
       mutate(!!! dots) %>%
       ggplot(aes_string(x = cvars[1], y = nvar, fill = cvars[2])) +
-        geom_bar(stat = "identity", position = type, alpha = .7)
+        geom_bar(stat = "identity", position = type, alpha = .7) +
+        #labs(x = cvars[1]) #+
+        scale_x_discrete(
+          labels = function(x) {
+            sapply(x, function(y){
+              lookup_table %>%
+                filter_(paste0('variable == "', cvars, '"')) %>%
+                filter_(paste0('syntactically_valid_name == "', y, '"')) %>%
+                magrittr::use_series(client_name) %>%
+                str_wrap(20) %>%
+                unique()
+            })
+          })
+
+
   } else if (length(cvars) == 3) {
 
     ctot <- which(colnames(tab) == "Total")
@@ -440,7 +498,19 @@ plot.pivotr <- function(x,
       mutate(!!! dots) %>%
       ggplot(aes_string(x = cvars[1], y = nvar, fill = cvars[2])) +
         geom_bar(stat = "identity", position = type, alpha = .7) +
-        facet_grid(paste(cvars[3], '~ .'))
+        facet_grid(paste(cvars[3], '~ .')) +
+      #labs(x = cvars[1]) #+
+      scale_x_discrete(
+        labels = function(x) {
+          sapply(x, function(y){
+            lookup_table %>%
+              filter_(paste0('variable == "', cvars, '"')) %>%
+              filter_(paste0('syntactically_valid_name == "', y, '"')) %>%
+              magrittr::use_series(client_name) %>%
+              str_wrap(20) %>%
+              unique()
+          })
+        })
   } else {
     ## No plot returned if more than 3 grouping variables are selected
     return(invisible())
@@ -455,6 +525,16 @@ plot.pivotr <- function(x,
   } else {
     p <- p + ylab(paste0(nvar, " (", names(make_funs(object$fun)), ")"))
   }
+
+  # p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  p <- p +
+    theme(
+      legend.position = "top",
+      axis.text.x = element_text(size = 20),
+      axis.text.y = element_text(size = 20),
+      axis.title  = element_text(size = 20),
+      legend.text = element_text(size = 17),
+      legend.title= element_text(size = 15))
 
   sshhr(p)
 }
