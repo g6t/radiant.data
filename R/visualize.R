@@ -552,9 +552,13 @@ visualize <- function(dataset, xvar,
   for(i in seq_along(plot_list)) {
     plot_list[[i]] <-
       plot_list[[i]] +
-      theme(axis.text.x = element_text(size = 20),
+      theme(legend.position = "top",
+            axis.text.x = element_text(size = 20),
             axis.text.y = element_text(size = 20),
-            axis.title = element_text(size = 20))
+            axis.title = element_text(size = 20),
+            legend.text = element_text(size = 17),
+            legend.title= element_text(size = 15),
+            strip.text = element_text(size = 17))
   }
 
   if (custom)
