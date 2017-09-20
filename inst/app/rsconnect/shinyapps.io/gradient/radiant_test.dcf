@@ -1,0 +1,12 @@
+name: radiant_test
+title: radiant_test
+username:
+account: gradient
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 214627
+bundleId: 981665
+url: https://gradient.shinyapps.io/radiant_test/
+when: 1505397912.95302
+asMultiple: FALSE
+asStatic: FALSE

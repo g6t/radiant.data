@@ -520,6 +520,8 @@ plot.pivotr <- function(x,
       legend.text = element_text(size = 17),
       legend.title= element_text(size = 15))
 
+  p <- plotly::ggplotly(p)
+
   sshhr(p)
 }
 

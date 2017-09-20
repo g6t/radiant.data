@@ -1,0 +1,12 @@
+name: radiant_test
+title: radiant_test
+username: tom
+account: tom
+server: ec2-52-206-156-163.compute-1.amazonaws.com
+hostUrl: http://ec2-52-206-156-163.compute-1.amazonaws.com:3939/__api__
+appId: 7
+bundleId: 12
+url: http://ec2-52-206-156-163.compute-1.amazonaws.com:3939/content/7/
+when: 1505398099.63449
+asMultiple: FALSE
+asStatic: FALSE

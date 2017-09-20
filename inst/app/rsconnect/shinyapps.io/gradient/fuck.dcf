@@ -1,0 +1,12 @@
+name: fuck
+title: fuck
+username:
+account: gradient
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 214653
+bundleId: 981736
+url: https://gradient.shinyapps.io/fuck/
+when: 1505400980.43424
+asMultiple: FALSE
+asStatic: FALSE
