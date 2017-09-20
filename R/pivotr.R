@@ -31,13 +31,29 @@ pivotr <- function(dataset,
                    nr = NULL,
                    data_filter = "",
                    shiny = FALSE,
-                   na.rm = FALSE) {
+                   na.rm = FALSE,
+                   cvars_levels = NULL) {
 
   vars <- if (nvar == "None") cvars else c(cvars, nvar)
   fill <- if (nvar == "None") 0 else NA
   dat <- getdata(dataset, vars, filt = data_filter, na.rm = na.rm) #this na.rm doesn't work
   if (na.rm)
     dat <- na.omit(dat)
+  if (!is.null(cvars_levels)) {
+    dat_fil <-
+      dat %>%
+      filter_( str_c(cvars[1], ' %in% c("', paste0(cvars_levels, collapse = '", "'), '")'))
+
+    if ('NA' %in% cvars_levels) {
+      dat_fil <-
+        dat_fil %>%
+        bind_rows(
+          dat %>%
+          filter_(str_c('is.na(',cvars[1],')'))
+        )
+    }
+    dat <- dat_fil
+  }
 
   if (!is_string(dataset))
     dataset <- deparse(substitute(dataset)) %>% set_attr("df", TRUE)

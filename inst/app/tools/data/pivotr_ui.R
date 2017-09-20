@@ -79,6 +79,25 @@ output$numericPanelStatus <- reactive({
 })
 outputOptions(output, "numericPanelStatus", suspendWhenHidden = FALSE)
 
+
+output$ui_pvt_cvars_levels <- renderUI({
+  all_possible_vars <-
+    .getdata() %>%
+    select_(input$pvt_cvars[1]) %>%
+    unlist() %>%
+    unique()
+
+  if (input$pvt_na.rm) {
+    all_possible_vars <- na.omit(all_possible_vars)
+  }
+
+  selectizeInput("pvt_cvars_levels", label = "Use levels:",
+    choices  = all_possible_vars,
+    selected = all_possible_vars,
+    multiple = TRUE,
+    options = list(plugins = list("remove_button")))
+})
+
 output$ui_Pivotr <- renderUI({
   tagList(
     wellPanel(
@@ -94,6 +113,7 @@ output$ui_Pivotr <- renderUI({
         value = state_init("pvt_dec", 3),
         min = 0, max = 3
       ),
+      conditionalPanel("input.pvt_cvars != null", uiOutput('ui_pvt_cvars_levels')),
       with(tags, table(
         tr(
           td(checkboxInput("pvt_tab", "Show table  ", value = state_init("pvt_tab", TRUE))),
