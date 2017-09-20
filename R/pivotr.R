@@ -347,8 +347,8 @@ dtab.pivotr  <- function(object,
 
 
 
-  dt_tab <- {if (!perc) rounddf(tab, dec) else tab} %>%
-
+  dt_tab <- #{if (!perc) rounddf(tab, dec) else tab} %>%
+    rounddf(tab, dec) %>%
   DT::datatable(
     container = sketch,
     selection = "none",
