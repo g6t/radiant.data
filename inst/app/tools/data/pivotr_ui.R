@@ -316,16 +316,32 @@ observeEvent(input$pivotr_rows_all, {
     {do.call(plot, c(list(x = pvt), .))}
 })
 
-output$plot_pivot <- renderPlot({
-  if (is_empty(input$pvt_plot, FALSE)) return(invisible())
-  validate(
-    need(length(input$pvt_cvars) < 4, "Plots created for at most 3 categorical variables")
-  )
-  withProgress(message = "Making plot", value = 1, {
-    sshhr(.plot_pivot()) %>% print
-  })
-  return(invisible())
-}, width = pvt_plot_width, height = pvt_plot_height, res = 96)
+output$plot_pivot <- plotly::renderPlotly(.plot_pivot())
+
+
+# output$plot_pivot <- function(){
+#   if (is_empty(input$pvt_plot, FALSE)) return(invisible())
+#   validate(
+#     need(length(input$pvt_cvars) < 4, "Plots created for at most 3 categorical variables")
+#   )
+#   withProgress(message = "Making plot", value = 1, {
+#     # pdf(NULL)
+#     plotly::renderPlotly(sshhr(.plot_pivot()))
+#   })
+#   # return(invisible())
+# }()
+
+# output$plot_pivot <- renderPlotly({
+#   pdf(NULL)
+#   if (is_empty(input$pvt_plot, FALSE)) return(invisible())
+#   validate(
+#     need(length(input$pvt_cvars) < 4, "Plots created for at most 3 categorical variables")
+#   )
+#   withProgress(message = "Making plot", value = 1, {
+#     sshhr(.plot_pivot()) %>% print
+#   })
+#   return(invisible())
+# })# , width = pvt_plot_width, height = pvt_plot_height, res = 96)
 
 observeEvent(input$pvt_store, {
   dat <- try(.pivotr(), silent = TRUE)

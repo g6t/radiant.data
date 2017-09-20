@@ -58,7 +58,7 @@ output$ui_data <- renderUI({
               conditionalPanel("input.pvt_pause == false",
                 plot_downloader("pivot", width = pvt_plot_width, height = pvt_plot_height)
               ),
-              plotOutput("plot_pivot", width = "100%", height = "100%")
+              plotly::plotlyOutput("plot_pivot", width = "100%", height = "100%")
             )
           ),
           tabPanel("Visualize",
