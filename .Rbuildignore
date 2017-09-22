@@ -8,3 +8,4 @@ coverage.R
 cran-comments.md
 dep.R
 dev/
+Dockerfile
