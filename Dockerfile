@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     libssl1.0.0
 
 # basic shiny functionality
-RUN R -e "install.packages(c('shiny', 'rmarkdown', 'devtools', 'tidyr', 'broom', 'plotly', 'car', 'magrittr ', 'lubridate', 'tibble', 'rlang', 'grid', 'gridExtra', 'knitr', 'markdown', 'pryr', 'jsonlite', 'shinyAce', 'psych', 'DT', 'readr', 'scales', 'curl', 'rstudioapi', 'import', 'plotly', 'base64enc', 'methods'), repos='https://cloud.r-project.org/')"
+RUN R -e "install.packages(c('shiny', 'rmarkdown', 'devtools', 'tidyr', 'broom', 'plotly', 'car', 'magrittr ', 'lubridate', 'tibble', 'rlang', 'grid', 'gridExtra', 'knitr', 'markdown', 'pryr', 'jsonlite', 'shinyAce', 'psych', 'DT', 'readr', 'scales', 'curl', 'rstudioapi', 'import', 'plotly', 'base64enc', 'methods', 'stringr', 'dplyr'), repos='https://cloud.r-project.org/')"
 
 # install dependencies of the radiant.data app
 RUN R -e "devtools::install_github('g6t/radiant.data', ref = 'septemberdata')"
